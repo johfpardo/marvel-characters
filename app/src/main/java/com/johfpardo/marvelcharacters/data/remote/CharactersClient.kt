@@ -7,6 +7,7 @@ import javax.inject.Inject
 class CharactersClient @Inject constructor(
     private val charactersService: CharactersService
 ) {
-    suspend fun getCharacters(timestamp: String) =
-        charactersService.getCharacters(Constants.API_KEY, SecurityUtils.getHash(timestamp), timestamp)
+    suspend fun getCharacters(timestamp: String, limit: Int, offset: Int) =
+        charactersService.getCharacters(Constants.API_KEY, SecurityUtils.getHash(timestamp),
+            timestamp, limit, offset)
 }

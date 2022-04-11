@@ -10,5 +10,7 @@ interface CharactersService {
     @GET("/v1/public/characters")
     suspend fun getCharacters(@Query("apikey") apiKey: String,
                               @Query("hash") hash: String,
-                              @Query("ts") timestamp: String): Response<CharacterDataWrapper>
+                              @Query("ts") timestamp: String,
+                              @Query("limit") limit: Int,
+                              @Query("offset") offset: Int): Response<CharacterDataWrapper>
 }

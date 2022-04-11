@@ -1,42 +1,36 @@
 package com.johfpardo.marvelcharacters.ui.adapters
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
-import androidx.recyclerview.widget.RecyclerView
+import androidx.paging.PagingDataAdapter
+import androidx.recyclerview.widget.DiffUtil
 import com.johfpardo.marvelcharacters.R
 import com.johfpardo.marvelcharacters.data.model.Character
-import com.squareup.picasso.Picasso
+import com.johfpardo.marvelcharacters.ui.adapters.vh.CharactersViewHolder
 
-class CharactersAdapter(private val characters: ArrayList<Character>):
-    RecyclerView.Adapter<CharactersAdapter.CharactersViewHolder>() {
+class CharactersAdapter : PagingDataAdapter<Character, CharactersViewHolder>(COMPARATOR) {
 
-    inner class CharactersViewHolder internal constructor(itemView: View):
-        RecyclerView.ViewHolder(itemView) {
-        val ivAvatar: ImageView = itemView.findViewById(R.id.iv_avatar)
-        val tvName: TextView = itemView.findViewById(R.id.tv_name)
-        val tvDescription: TextView = itemView.findViewById(R.id.tv_description)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CharactersViewHolder =
+        CharactersViewHolder(
+            LayoutInflater.from(parent.context).inflate(R.layout.character_list_item, parent, false)
+        )
 
-        fun bind(character: Character) {
-            tvName.text = character.name
-            tvDescription.text = character.description
-            Picasso.get().load(character.thumbnail?.fullPath).into(ivAvatar)
+    override fun onBindViewHolder(holder: CharactersViewHolder, position: Int) {
+        getItem(position)?.let {
+            holder.bind(it)
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CharactersViewHolder =
-        CharactersViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.character_list_item, parent, false))
+    companion object {
+        private val COMPARATOR = object : DiffUtil.ItemCallback<Character>() {
+            override fun areItemsTheSame(oldItem: Character, newItem: Character): Boolean {
+                return oldItem == newItem
+            }
 
-    override fun onBindViewHolder(holder: CharactersViewHolder, position: Int) {
-        holder.bind(characters[position])
-    }
+            override fun areContentsTheSame(oldItem: Character, newItem: Character): Boolean {
+                return oldItem.id == newItem.id
+            }
 
-    override fun getItemCount(): Int = characters.size
-
-    fun addCharacters(newCharacters: List<Character>) {
-        characters.addAll(newCharacters)
-        notifyDataSetChanged()
+        }
     }
 }
