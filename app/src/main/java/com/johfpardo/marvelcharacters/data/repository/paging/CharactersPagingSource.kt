@@ -5,8 +5,9 @@ import androidx.paging.PagingState
 import com.johfpardo.marvelcharacters.data.model.Character
 import com.johfpardo.marvelcharacters.data.remote.CharactersClient
 import com.johfpardo.marvelcharacters.utils.DateUtils.currentTimestamp
+import javax.inject.Inject
 
-class CharactersPagingSource(
+class CharactersPagingSource @Inject constructor(
     private val charactersClient: CharactersClient
 ) : PagingSource<Int, Character>() {
     override fun getRefreshKey(state: PagingState<Int, Character>): Int? {

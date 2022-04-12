@@ -9,12 +9,13 @@ import com.johfpardo.marvelcharacters.data.repository.paging.CharactersPagingSou
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
-class CharactersRepository @Inject constructor(private val charactersClient: CharactersClient) {
-
+class CharactersRepository @Inject constructor(
+    private val charactersPagingSource: CharactersPagingSource
+) {
     fun getCharacters(): Flow<PagingData<Character>> {
         return Pager(
             PagingConfig(NETWORK_PAGE_SIZE),
-            pagingSourceFactory = { CharactersPagingSource(charactersClient) }
+            pagingSourceFactory = { charactersPagingSource }
         ).flow
     }
 
