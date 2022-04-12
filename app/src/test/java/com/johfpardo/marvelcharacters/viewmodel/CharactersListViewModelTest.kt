@@ -38,6 +38,7 @@ class CharactersListViewModelTest {
         MockKAnnotations.init(this)
         charactersListViewModel = CharactersListViewModel(charactersRepository,
             testCoroutineRule.testCoroutineDispatcher)
+        every { pagingDataObserver.onChanged(any()) } just Runs
     }
 
     @ExperimentalCoroutinesApi

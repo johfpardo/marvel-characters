@@ -16,6 +16,7 @@ import com.johfpardo.marvelcharacters.R
 import com.johfpardo.marvelcharacters.di.AppComponentProvider
 import com.johfpardo.marvelcharacters.ui.adapters.CharacterLoadStateAdapter
 import com.johfpardo.marvelcharacters.ui.adapters.CharactersAdapter
+import com.johfpardo.marvelcharacters.ui.adapters.vh.CharactersViewHolder
 import com.johfpardo.marvelcharacters.utils.ext.getViewModel
 import com.johfpardo.marvelcharacters.viewmodel.CharactersListViewModel
 import com.johfpardo.marvelcharacters.viewmodel.CharactersListViewModelFactory
@@ -28,7 +29,7 @@ import javax.inject.Inject
  * Use the [CharactersListFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class CharactersListFragment : Fragment() {
+class CharactersListFragment : Fragment(), CharactersViewHolder.CharacterItemListener {
 
     @Inject
     lateinit var viewModelFactory: CharactersListViewModelFactory
@@ -60,7 +61,7 @@ class CharactersListFragment : Fragment() {
         recyclerView = view.findViewById(R.id.characters_recycler)
         btInitialRetry = view.findViewById(R.id.bt_initial_retry)
 
-        adapter = CharactersAdapter()
+        adapter = CharactersAdapter(this)
         recyclerView.adapter =
             adapter.withLoadStateFooter(CharacterLoadStateAdapter { adapter.retry() })
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
@@ -90,8 +91,23 @@ class CharactersListFragment : Fragment() {
                     ?: loadState.append as? LoadState.Error
                     ?: loadState.prepend as? LoadState.Error
                 errorState?.let {
-                    showError("\uD83D\uDE28 Wooops ${it.error}")
+                    showError("${it.error}")
                 }
+            }
+        }
+    }
+
+    override fun onItemClicked(characterId: Int?) {
+        characterId?.let {
+            val transaction = parentFragmentManager.beginTransaction()
+            with(transaction) {
+                setCustomAnimations(
+                    R.anim.slide_in_from_right, R.anim.slide_out_to_left,
+                    R.anim.slide_in_from_left, R.anim.slide_out_to_right
+                )
+                replace(R.id.fragment_container, CharacterDetailFragment.newInstance(it.toString()))
+                addToBackStack(null)
+                commit()
             }
         }
     }

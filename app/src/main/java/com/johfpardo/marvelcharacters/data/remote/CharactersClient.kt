@@ -8,6 +8,19 @@ class CharactersClient @Inject constructor(
     private val charactersService: CharactersService
 ) {
     suspend fun getCharacters(timestamp: String, limit: Int, offset: Int) =
-        charactersService.getCharacters(Constants.API_KEY, SecurityUtils.getHash(timestamp),
-            timestamp, limit, offset)
+        charactersService.getCharacters(
+            Constants.API_KEY,
+            SecurityUtils.getHash(timestamp),
+            timestamp,
+            limit,
+            offset
+        )
+
+    suspend fun getCharacterById(characterId: String, timestamp: String) =
+        charactersService.getCharacterById(
+            characterId,
+            Constants.API_KEY,
+            SecurityUtils.getHash(timestamp),
+            timestamp
+        )
 }
