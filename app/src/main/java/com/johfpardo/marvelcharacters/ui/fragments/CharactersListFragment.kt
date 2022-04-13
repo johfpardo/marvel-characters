@@ -105,7 +105,7 @@ class CharactersListFragment : Fragment(), CharactersViewHolder.CharacterItemLis
                     R.anim.slide_in_from_right, R.anim.slide_out_to_left,
                     R.anim.slide_in_from_left, R.anim.slide_out_to_right
                 )
-                replace(R.id.fragment_container, CharacterDetailFragment.newInstance(it.toString()))
+                add(R.id.fragment_container, CharacterDetailFragment.newInstance(it.toString()))
                 addToBackStack(null)
                 commit()
             }
