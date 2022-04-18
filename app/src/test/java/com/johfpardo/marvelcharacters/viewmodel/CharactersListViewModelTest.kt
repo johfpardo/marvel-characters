@@ -4,8 +4,8 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
 import androidx.paging.PagingData
 import com.johfpardo.marvelcharacters.data.model.Character
-import com.johfpardo.marvelcharacters.data.repository.CharactersRepository
 import com.johfpardo.marvelcharacters.testUtils.TestCoroutineRule
+import com.johfpardo.marvelcharacters.usecase.GetCharacters
 import io.mockk.*
 import io.mockk.impl.annotations.MockK
 import junit.framework.Assert.assertNotNull
@@ -18,7 +18,7 @@ import org.junit.Test
 class CharactersListViewModelTest {
 
     @MockK
-    private lateinit var charactersRepository: CharactersRepository
+    private lateinit var getCharacters: GetCharacters
 
     @MockK
     private lateinit var pagingDataObserver: Observer<PagingData<Character>>
@@ -36,8 +36,10 @@ class CharactersListViewModelTest {
     @Before
     fun setUp() {
         MockKAnnotations.init(this)
-        charactersListViewModel = CharactersListViewModel(charactersRepository,
-            testCoroutineRule.testCoroutineDispatcher)
+        charactersListViewModel = CharactersListViewModel(
+            getCharacters,
+            testCoroutineRule.testCoroutineDispatcher
+        )
         every { pagingDataObserver.onChanged(any()) } just Runs
     }
 
@@ -50,7 +52,7 @@ class CharactersListViewModelTest {
         val testFlow = flow {
             emit(PagingData.from(listOf(character)))
         }
-        every { charactersRepository.getCharacters() } returns testFlow
+        every { getCharacters.execute() } returns testFlow
         //When
         charactersListViewModel.getCharacters().observeForever(pagingDataObserver)
         //Then

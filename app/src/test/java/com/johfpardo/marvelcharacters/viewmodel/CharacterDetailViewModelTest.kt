@@ -4,8 +4,8 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
 import com.johfpardo.marvelcharacters.data.model.CharacterDataContainer
 import com.johfpardo.marvelcharacters.data.model.Resource
-import com.johfpardo.marvelcharacters.data.repository.CharacterRepository
 import com.johfpardo.marvelcharacters.testUtils.TestCoroutineRule
+import com.johfpardo.marvelcharacters.usecase.GetCharacterById
 import io.mockk.*
 import io.mockk.impl.annotations.MockK
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -18,7 +18,7 @@ import org.junit.Test
 class CharacterDetailViewModelTest {
 
     @MockK
-    private lateinit var characterRepository: CharacterRepository
+    private lateinit var getCharacterById: GetCharacterById
 
     @MockK
     private lateinit var resourceDataObserver: Observer<Resource<CharacterDataContainer>>
@@ -36,8 +36,10 @@ class CharacterDetailViewModelTest {
     @Before
     fun setUp() {
         MockKAnnotations.init(this)
-        characterDetailViewModel = CharacterDetailViewModel(characterRepository,
-            testCoroutineRule.testCoroutineDispatcher)
+        characterDetailViewModel = CharacterDetailViewModel(
+            getCharacterById,
+            testCoroutineRule.testCoroutineDispatcher
+        )
         every { resourceDataObserver.onChanged(any()) } just Runs
     }
 
@@ -46,12 +48,13 @@ class CharacterDetailViewModelTest {
         //Given
         val characterData = mockk<CharacterDataContainer>()
         val characterResource = Resource.Success(characterData)
-        coEvery { characterRepository.getCharacterById(any()) } returns characterResource
+        coEvery { getCharacterById.execute(any()) } returns characterResource
         //When
-        characterDetailViewModel.getCharacterById(FAKE_CHARACTER_ID).observeForever(resourceDataObserver)
+        characterDetailViewModel.getCharacterById(FAKE_CHARACTER_ID)
+            .observeForever(resourceDataObserver)
         //Then
         coVerify {
-            characterRepository.getCharacterById(FAKE_CHARACTER_ID)
+            getCharacterById.execute(FAKE_CHARACTER_ID)
         }
     }
 
@@ -61,9 +64,10 @@ class CharacterDetailViewModelTest {
         val characterData = mockk<CharacterDataContainer>()
         val characterResource = Resource.Success(characterData)
         val capturedResource = mutableListOf<Resource<CharacterDataContainer>>()
-        coEvery { characterRepository.getCharacterById(any()) } returns characterResource
+        coEvery { getCharacterById.execute(any()) } returns characterResource
         //When
-        characterDetailViewModel.getCharacterById(FAKE_CHARACTER_ID).observeForever(resourceDataObserver)
+        characterDetailViewModel.getCharacterById(FAKE_CHARACTER_ID)
+            .observeForever(resourceDataObserver)
         //Then
         verify {
             resourceDataObserver.onChanged(capture(capturedResource))
@@ -78,9 +82,10 @@ class CharacterDetailViewModelTest {
     fun getCharacterById_error_returnError() {
         //Given
         val capturedResource = mutableListOf<Resource<CharacterDataContainer>>()
-        coEvery { characterRepository.getCharacterById(any()) } throws Exception(FAKE_ERROR_MESSAGE)
+        coEvery { getCharacterById.execute(any()) } throws Exception(FAKE_ERROR_MESSAGE)
         //When
-        characterDetailViewModel.getCharacterById(FAKE_CHARACTER_ID).observeForever(resourceDataObserver)
+        characterDetailViewModel.getCharacterById(FAKE_CHARACTER_ID)
+            .observeForever(resourceDataObserver)
         //Then
         verify {
             resourceDataObserver.onChanged(capture(capturedResource))
