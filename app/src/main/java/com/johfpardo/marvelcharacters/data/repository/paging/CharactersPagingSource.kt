@@ -4,7 +4,6 @@ import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.johfpardo.marvelcharacters.data.model.Character
 import com.johfpardo.marvelcharacters.data.remote.CharactersClient
-import com.johfpardo.marvelcharacters.utils.DateUtils.currentTimestamp
 import javax.inject.Inject
 
 class CharactersPagingSource @Inject constructor(
@@ -20,7 +19,7 @@ class CharactersPagingSource @Inject constructor(
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Character> {
         val offset = params.key ?: INITIAL_OFFSET
         return try {
-            val response = charactersClient.getCharacters(currentTimestamp(), params.loadSize, offset)
+            val response = charactersClient.getCharacters(params.loadSize, offset)
             if (response.isSuccessful) {
                 val data = response.body()?.data
                 val total = data?.total ?: 0
