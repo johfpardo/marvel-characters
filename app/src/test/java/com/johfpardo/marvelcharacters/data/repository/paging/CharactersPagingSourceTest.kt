@@ -22,7 +22,6 @@ import org.hamcrest.MatcherAssert.assertThat
 import org.junit.Before
 import org.junit.Test
 import retrofit2.Response
-import java.lang.Exception
 
 class CharactersPagingSourceTest {
 
@@ -99,11 +98,11 @@ class CharactersPagingSourceTest {
         every { response.body()?.data } returns characterData
         every { characterData.total } returns 0
         every { characterData.results } returns emptyList()
-        coEvery { charactersClient.getCharacters(any(), any(), any()) } returns response
+        coEvery { charactersClient.getCharacters(any(), any()) } returns response
         //When
         val result = charactersPagingSource.load(loadParams)
         //Then
-        coVerify { charactersClient.getCharacters(any(), FAKE_PAGE_SIZE, 0) }
+        coVerify { charactersClient.getCharacters(FAKE_PAGE_SIZE, 0) }
         assert(result is PagingSource.LoadResult.Page)
         val page = result as PagingSource.LoadResult.Page<Int, Character>
         assertThat(page.data.isEmpty(), `is`(true))
@@ -121,11 +120,11 @@ class CharactersPagingSourceTest {
         every { response.body()?.data } returns characterData
         every { characterData.total } returns FAKE_TOTAL
         every { characterData.results } returns characters
-        coEvery { charactersClient.getCharacters(any(), any(), any()) } returns response
+        coEvery { charactersClient.getCharacters(any(), any()) } returns response
         //When
         val result = charactersPagingSource.load(loadParams)
         //Then
-        coVerify { charactersClient.getCharacters(any(), FAKE_PAGE_SIZE, 0) }
+        coVerify { charactersClient.getCharacters(FAKE_PAGE_SIZE, 0) }
         assert(result is PagingSource.LoadResult.Page)
         val page = result as PagingSource.LoadResult.Page<Int, Character>
         assertThat(page.data, `is`(characters))
@@ -143,11 +142,11 @@ class CharactersPagingSourceTest {
         every { response.body()?.data } returns characterData
         every { characterData.total } returns FAKE_TOTAL
         every { characterData.results } returns characters
-        coEvery { charactersClient.getCharacters(any(), any(), any()) } returns response
+        coEvery { charactersClient.getCharacters(any(), any()) } returns response
         //When
         val result = charactersPagingSource.load(loadParams)
         //Then
-        coVerify { charactersClient.getCharacters(any(), FAKE_PAGE_SIZE, FAKE_SECOND_KEY) }
+        coVerify { charactersClient.getCharacters(FAKE_PAGE_SIZE, FAKE_SECOND_KEY) }
         assert(result is PagingSource.LoadResult.Page)
         val page = result as PagingSource.LoadResult.Page<Int, Character>
         assertThat(page.data, `is`(characters))
@@ -165,11 +164,11 @@ class CharactersPagingSourceTest {
         every { response.body()?.data } returns characterData
         every { characterData.total } returns FAKE_TOTAL
         every { characterData.results } returns characters
-        coEvery { charactersClient.getCharacters(any(), any(), any()) } returns response
+        coEvery { charactersClient.getCharacters(any(), any()) } returns response
         //When
         val result = charactersPagingSource.load(loadParams)
         //Then
-        coVerify { charactersClient.getCharacters(any(), FAKE_PAGE_SIZE, FAKE_LAST_KEY) }
+        coVerify { charactersClient.getCharacters(FAKE_PAGE_SIZE, FAKE_LAST_KEY) }
         assert(result is PagingSource.LoadResult.Page)
         val page = result as PagingSource.LoadResult.Page<Int, Character>
         assertThat(page.data, `is`(characters))
@@ -184,7 +183,7 @@ class CharactersPagingSourceTest {
         every { loadParams.key } returns 0
         every { loadParams.loadSize } returns FAKE_PAGE_SIZE
         coEvery {
-            charactersClient.getCharacters(any(), any(), any())
+            charactersClient.getCharacters(any(), any())
         } throws NetworkErrorException("NetworkError")
         //When
         val result = charactersPagingSource.load(loadParams)
@@ -202,7 +201,7 @@ class CharactersPagingSourceTest {
         every { loadParams.loadSize } returns FAKE_PAGE_SIZE
         every { response.isSuccessful } returns false
         every { response.errorBody()?.toString() } returns FAKE_ERROR_BODY
-        coEvery { charactersClient.getCharacters(any(), any(), any()) } returns response
+        coEvery { charactersClient.getCharacters(any(), any()) } returns response
         //When
         val result = charactersPagingSource.load(loadParams)
         //Then
