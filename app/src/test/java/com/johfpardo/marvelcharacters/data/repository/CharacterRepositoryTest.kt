@@ -4,7 +4,10 @@ import com.johfpardo.marvelcharacters.data.model.CharacterDataContainer
 import com.johfpardo.marvelcharacters.data.model.CharacterDataWrapper
 import com.johfpardo.marvelcharacters.data.model.Resource
 import com.johfpardo.marvelcharacters.data.remote.CharactersClient
-import io.mockk.*
+import io.mockk.MockKAnnotations
+import io.mockk.coEvery
+import io.mockk.coVerify
+import io.mockk.every
 import io.mockk.impl.annotations.InjectMockKs
 import io.mockk.impl.annotations.MockK
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -38,20 +41,20 @@ class CharacterRepositoryTest {
     @Test
     fun getCharacterById_callApi_passSameData() = runBlockingTest {
         //Given
-        coEvery { charactersClient.getCharacterById(any(), any()) } returns characterResponse
+        coEvery { charactersClient.getCharacterById(any()) } returns characterResponse
         every { characterResponse.isSuccessful } returns true
         every { characterResponse.body()?.data } returns characterData
         //When
         characterRepository.getCharacterById(FAKE_CHARACTER_ID)
         //Then
-        coVerify { charactersClient.getCharacterById(FAKE_CHARACTER_ID, any()) }
+        coVerify { charactersClient.getCharacterById(FAKE_CHARACTER_ID) }
     }
 
     @ExperimentalCoroutinesApi
     @Test
     fun getCharacterById_success_returnData() = runBlockingTest {
         //Given
-        coEvery { charactersClient.getCharacterById(any(), any()) } returns characterResponse
+        coEvery { charactersClient.getCharacterById(any()) } returns characterResponse
         every { characterResponse.isSuccessful } returns true
         every { characterResponse.body()?.data } returns characterData
         //When
@@ -65,7 +68,7 @@ class CharacterRepositoryTest {
     @Test
     fun getCharacterById_error_returnError() = runBlockingTest {
         //Given
-        coEvery { charactersClient.getCharacterById(any(), any()) } returns characterResponse
+        coEvery { charactersClient.getCharacterById(any()) } returns characterResponse
         every { characterResponse.isSuccessful } returns false
         every { characterResponse.errorBody().toString() } returns FAKE_ERROR_BODY
         //When

@@ -1,8 +1,6 @@
 package com.johfpardo.marvelcharacters.data.remote
 
 import com.johfpardo.marvelcharacters.data.model.CharacterDataWrapper
-import com.johfpardo.marvelcharacters.utils.Constants
-import com.johfpardo.marvelcharacters.utils.Constants.API_KEY
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -36,15 +34,11 @@ class CharactersClientTest {
     @Test
     fun getCharacters_callApi_passSameData() = runBlockingTest {
         //Given
-        coEvery {
-            charactersService.getCharacters(any(), any(), any(), any(), any())
-        } returns characterResponse
+        coEvery { charactersService.getCharacters(any(), any()) } returns characterResponse
         //When
-        val result = charactersClient.getCharacters(FAKE_TIMESTAMP, FAKE_LIMIT, FAKE_OFFSET)
+        val result = charactersClient.getCharacters(FAKE_LIMIT, FAKE_OFFSET)
         //Then
-        coVerify {
-            charactersService.getCharacters(API_KEY, any(), FAKE_TIMESTAMP, FAKE_LIMIT, FAKE_OFFSET)
-        }
+        coVerify { charactersService.getCharacters(FAKE_LIMIT, FAKE_OFFSET) }
         assertThat(result, `is`(characterResponse))
     }
 
@@ -52,20 +46,15 @@ class CharactersClientTest {
     @Test
     fun getCharacterById_callApi_passSameData() = runBlockingTest {
         //Given
-        coEvery {
-            charactersService.getCharacterById(any(), any(), any(), any())
-        } returns characterResponse
+        coEvery { charactersService.getCharacterById(any()) } returns characterResponse
         //When
-        val result = charactersClient.getCharacterById(FAKE_CHARACTER_ID, FAKE_TIMESTAMP)
+        val result = charactersClient.getCharacterById(FAKE_CHARACTER_ID)
         //Then
-        coVerify {
-            charactersService.getCharacterById(FAKE_CHARACTER_ID, API_KEY, any(), FAKE_TIMESTAMP)
-        }
+        coVerify { charactersService.getCharacterById(FAKE_CHARACTER_ID) }
         assertThat(result, `is`(characterResponse))
     }
 
     companion object {
-        private const val FAKE_TIMESTAMP = "12313123"
         private const val FAKE_LIMIT = 20
         private const val FAKE_OFFSET = 20
         private const val FAKE_CHARACTER_ID = "131231"
