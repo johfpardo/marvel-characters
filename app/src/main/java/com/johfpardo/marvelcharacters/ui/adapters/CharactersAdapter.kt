@@ -4,8 +4,8 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
-import com.johfpardo.marvelcharacters.R
 import com.johfpardo.marvelcharacters.data.model.Character
+import com.johfpardo.marvelcharacters.databinding.CharacterListItemBinding
 import com.johfpardo.marvelcharacters.ui.adapters.vh.CharactersViewHolder
 
 class CharactersAdapter(
@@ -14,8 +14,11 @@ class CharactersAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CharactersViewHolder =
         CharactersViewHolder(
-            LayoutInflater.from(parent.context)
-                .inflate(R.layout.character_list_item, parent, false),
+            CharacterListItemBinding.inflate(
+                LayoutInflater.from(parent.context),
+                parent,
+                false
+            ),
             characterItemListener
         )
 
