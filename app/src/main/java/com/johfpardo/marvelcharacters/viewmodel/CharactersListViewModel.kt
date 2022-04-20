@@ -33,6 +33,7 @@ class CharactersListViewModel(
     private fun evaluateError(loadState: CombinedLoadStates): String? {
         val errorState = loadState.source.append as? LoadState.Error
             ?: loadState.source.prepend as? LoadState.Error
+            ?: loadState.source.refresh as? LoadState.Error
             ?: loadState.append as? LoadState.Error
             ?: loadState.prepend as? LoadState.Error
             ?: loadState.refresh as? LoadState.Error
