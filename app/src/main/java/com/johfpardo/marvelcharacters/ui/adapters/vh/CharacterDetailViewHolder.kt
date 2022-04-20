@@ -1,20 +1,17 @@
 package com.johfpardo.marvelcharacters.ui.adapters.vh
 
-import android.view.View
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.johfpardo.marvelcharacters.R
 import com.johfpardo.marvelcharacters.data.model.DetailItem
+import com.johfpardo.marvelcharacters.databinding.DetailListItemBinding
 
-class CharacterDetailViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-    private val tvText: TextView = itemView.findViewById(R.id.tv_text)
+class CharacterDetailViewHolder(
+    private val binding: DetailListItemBinding
+) : RecyclerView.ViewHolder(binding.root) {
 
     fun bind(detailItem: DetailItem) {
-        tvText.text = detailItem.text
-        when (detailItem) {
-            is DetailItem.Title -> tvText.setTextAppearance(R.style.DetailTitle)
-
-            is DetailItem.Item -> tvText.setTextAppearance(R.style.DetailItem)
+        with(binding) {
+            this.detailItem = detailItem
+            executePendingBindings()
         }
     }
 }

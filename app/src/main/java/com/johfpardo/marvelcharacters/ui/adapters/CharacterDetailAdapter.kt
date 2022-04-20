@@ -3,8 +3,8 @@ package com.johfpardo.marvelcharacters.ui.adapters
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.johfpardo.marvelcharacters.R
 import com.johfpardo.marvelcharacters.data.model.DetailItem
+import com.johfpardo.marvelcharacters.databinding.DetailListItemBinding
 import com.johfpardo.marvelcharacters.ui.adapters.vh.CharacterDetailViewHolder
 
 class CharacterDetailAdapter(
@@ -12,7 +12,7 @@ class CharacterDetailAdapter(
 ) : RecyclerView.Adapter<CharacterDetailViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CharacterDetailViewHolder =
         CharacterDetailViewHolder(
-            LayoutInflater.from(parent.context).inflate(R.layout.detail_list_item, parent, false)
+            DetailListItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         )
 
     override fun onBindViewHolder(holder: CharacterDetailViewHolder, position: Int) {
