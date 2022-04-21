@@ -13,7 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="8dp">
+        android:padding="@dimen/small_padding">
 
         <TextView
             android:id="@+id/tv_error_msg"
@@ -24,7 +24,7 @@
             android:textAlignment="center"
             android:textColor="?android:textColorPrimary"
             app:isVisible="@{loadState.error}"
-            tools:text="Timeout" />
+            tools:text="@string/sample_error" />
 
         <ProgressBar
             android:id="@+id/progress_bar"

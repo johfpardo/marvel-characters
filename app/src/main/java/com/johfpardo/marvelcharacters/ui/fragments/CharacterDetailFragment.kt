@@ -49,15 +49,15 @@ class CharacterDetailFragment : Fragment() {
 
         binding.rvDetailList.adapter = adapter
 
+        binding.btRetry.setOnClickListener {
+            getCharacter()
+        }
+
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        characterId?.let { characterId ->
-            viewModel.getCharacterById(characterId)
-        }
 
         viewModel.uiState.observe(viewLifecycleOwner, { uiState ->
             binding.uiState = uiState
@@ -65,9 +65,17 @@ class CharacterDetailFragment : Fragment() {
                 Toast.makeText(requireContext(), it, Toast.LENGTH_LONG).show()
             }
             uiState.character?.let {
-                adapter.addItems(it.getDetailItems())
+                adapter.addItems(it.detailItems)
             }
         })
+
+        getCharacter()
+    }
+
+    private fun getCharacter() {
+        characterId?.let { characterId ->
+            viewModel.getCharacterById(characterId)
+        }
     }
 
     companion object {

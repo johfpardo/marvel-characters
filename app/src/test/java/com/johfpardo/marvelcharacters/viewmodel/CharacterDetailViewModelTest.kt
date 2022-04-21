@@ -2,8 +2,7 @@ package com.johfpardo.marvelcharacters.viewmodel
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
-import com.johfpardo.marvelcharacters.data.model.Character
-import com.johfpardo.marvelcharacters.data.model.CharacterDataContainer
+import com.johfpardo.marvelcharacters.data.model.CharacterSummary
 import com.johfpardo.marvelcharacters.data.model.Resource
 import com.johfpardo.marvelcharacters.testUtils.TestCoroutineRule
 import com.johfpardo.marvelcharacters.ui.states.CharacterDetailUiState
@@ -50,8 +49,8 @@ class CharacterDetailViewModelTest {
     @Test
     fun getCharacterById_callApi_passSameData() {
         //Given
-        val characterData = mockk<CharacterDataContainer>()
-        val characterResource = Resource.Success(characterData)
+        val characterSummary = mockk<CharacterSummary>()
+        val characterResource = Resource.Success(characterSummary)
         coEvery { getCharacterById.execute(any()) } returns characterResource
         characterDetailViewModel.uiState.observeForever(uiStateObserver)
         //When
@@ -65,11 +64,9 @@ class CharacterDetailViewModelTest {
     @Test
     fun getCharacterById_success_returnData() {
         //Given
-        val characterData = mockk<CharacterDataContainer>()
-        val character = mockk<Character>()
-        val characterResource = Resource.Success(characterData)
+        val characterSummary = mockk<CharacterSummary>()
+        val characterResource = Resource.Success(characterSummary)
         val capturedUiState = mutableListOf<CharacterDetailUiState>()
-        every { characterData.results[0] } returns character
         coEvery { getCharacterById.execute(any()) } returns characterResource
         characterDetailViewModel.uiState.observeForever(uiStateObserver)
         //When
@@ -82,14 +79,14 @@ class CharacterDetailViewModelTest {
         assertThat(capturedUiState[0].isLoading, `is`(true))
         assertNotNull(capturedUiState[1].character)
         assertNull(capturedUiState[1].errorMessage)
-        assertThat(capturedUiState[1].character, `is`(character))
+        assertThat(capturedUiState[1].character, `is`(characterSummary))
     }
 
     @Test
     fun getCharacterById_error_returnError() {
         //Given
         val capturedUiState = mutableListOf<CharacterDetailUiState>()
-        val errorResource = Resource.Error<CharacterDataContainer>(FAKE_ERROR_MESSAGE)
+        val errorResource = Resource.Error<CharacterSummary>(FAKE_ERROR_MESSAGE)
         coEvery { getCharacterById.execute(any()) } returns errorResource
         characterDetailViewModel.uiState.observeForever(uiStateObserver)
         //When

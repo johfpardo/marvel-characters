@@ -25,9 +25,7 @@ class CharacterDetailViewModel(
             try {
                 when (val result = getCharacterById.execute(characterId)) {
                     is Resource.Success -> {
-                        _uiState.postValue(
-                            CharacterDetailUiState(character = result.data?.results?.get(0))
-                        )
+                        _uiState.postValue(CharacterDetailUiState(character = result.data))
                     }
                     is Resource.Error -> {
                         _uiState.postValue(CharacterDetailUiState(errorMessage = result.message))

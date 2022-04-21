@@ -12,4 +12,10 @@ object Constants {
 
     const val API_KEY = "<api-Key>"
     const val PRI_KEY = "<pri-key>"
+
+    const val INVALID_ID = -1
+    const val COMICS = "Comics"
+    const val STORIES = "Stories"
+    const val EVENTS = "Events"
+    const val SERIES = "Series"
 }

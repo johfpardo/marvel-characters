@@ -1,9 +1,9 @@
 package com.johfpardo.marvelcharacters.ui.states
 
-import com.johfpardo.marvelcharacters.data.model.Character
+import com.johfpardo.marvelcharacters.data.model.CharacterSummary
 
 data class CharacterDetailUiState(
     val isLoading: Boolean = false,
-    val character: Character? = null,
+    val character: CharacterSummary? = null,
     val errorMessage: String? = null
 )
