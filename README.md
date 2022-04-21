@@ -10,6 +10,7 @@ This info is recollected from the https://developer.marvel.com/docs, please refe
 
 - Android Jetpack Paging 
 - Android Jetpack Lifecycle
+- Android Jetpack Databinding
 - Retrofit
 - Picasso
 - Kotlin Coroutines
