@@ -5,7 +5,7 @@ import androidx.lifecycle.Observer
 import androidx.paging.CombinedLoadStates
 import androidx.paging.LoadState
 import androidx.paging.PagingData
-import com.johfpardo.marvelcharacters.data.model.Character
+import com.johfpardo.marvelcharacters.data.model.CharacterSummary
 import com.johfpardo.marvelcharacters.testUtils.TestCoroutineRule
 import com.johfpardo.marvelcharacters.ui.states.CharacterListUiState
 import com.johfpardo.marvelcharacters.usecase.GetCharacters
@@ -27,7 +27,7 @@ class CharactersListViewModelTest {
     private lateinit var getCharacters: GetCharacters
 
     @MockK
-    private lateinit var pagingDataObserver: Observer<PagingData<Character>>
+    private lateinit var pagingDataObserver: Observer<PagingData<CharacterSummary>>
 
     @MockK
     private lateinit var uiStateObserver: Observer<CharacterListUiState>
@@ -68,8 +68,8 @@ class CharactersListViewModelTest {
     @Test
     fun testGetCharacters() = testCoroutineRule.runBlockingTest {
         //Given
-        val dataSlot = slot<PagingData<Character>>()
-        val character = mockk<Character>()
+        val dataSlot = slot<PagingData<CharacterSummary>>()
+        val character = mockk<CharacterSummary>()
         val testFlow = flow {
             emit(PagingData.from(listOf(character)))
         }

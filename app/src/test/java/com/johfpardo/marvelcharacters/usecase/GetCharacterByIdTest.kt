@@ -1,14 +1,12 @@
 package com.johfpardo.marvelcharacters.usecase
 
 import com.johfpardo.marvelcharacters.data.model.CharacterDataContainer
+import com.johfpardo.marvelcharacters.data.model.CharacterSummary
 import com.johfpardo.marvelcharacters.data.model.Resource
 import com.johfpardo.marvelcharacters.data.repository.CharacterRepository
-import io.mockk.MockKAnnotations
-import io.mockk.coEvery
-import io.mockk.coVerify
+import io.mockk.*
 import io.mockk.impl.annotations.InjectMockKs
 import io.mockk.impl.annotations.MockK
-import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runBlockingTest
 import org.hamcrest.CoreMatchers.`is`
@@ -34,13 +32,15 @@ class GetCharacterByIdTest {
     fun execute_callApi_passDataCorrectly() = runBlockingTest {
         //Given
         val characterData = mockk<CharacterDataContainer>()
+        val characterSummary = mockk<CharacterSummary>()
         val characterResource = Resource.Success(characterData)
         coEvery { characterRepository.getCharacterById(any()) } returns characterResource
+        every { characterData.results[0].toCharacterSummary() } returns characterSummary
         //When
         getCharacterById.execute(FAKE_CHARACTER_ID)
         //Then
         coVerify {
-            getCharacterById.execute(FAKE_CHARACTER_ID)
+            characterRepository.getCharacterById(FAKE_CHARACTER_ID)
         }
     }
 
@@ -49,13 +49,15 @@ class GetCharacterByIdTest {
     fun execute_successResponse_returnData() = runBlockingTest {
         //Given
         val characterData = mockk<CharacterDataContainer>()
+        val characterSummary = mockk<CharacterSummary>()
         val characterResource = Resource.Success(characterData)
         coEvery { characterRepository.getCharacterById(any()) } returns characterResource
+        every { characterData.results[0].toCharacterSummary() } returns characterSummary
         //When
         val result = getCharacterById.execute(FAKE_CHARACTER_ID)
         //Then
         assert(result is Resource.Success)
-        assertThat(result.data, `is`(characterData))
+        assertThat(result.data, `is`(characterSummary))
     }
 
     @ExperimentalCoroutinesApi

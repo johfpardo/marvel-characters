@@ -1,11 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="DetailTitle" parent="@android:style/Widget.TextView">
-        <item name="android:textSize">20sp</item>
+    <style name="TextAppearance.MarvelCharacters.DetailTitle" parent="TextAppearance.MaterialComponents.Headline6">
         <item name="android:textColor">?android:textColorPrimary</item>
         <item name="android:textStyle">bold</item>
     </style>
-    <style name="DetailItem" parent="@android:style/Widget.TextView">
-        <item name="android:textSize">16sp</item>
+
+    <style name="TextAppearance.MarvelCharacters.DetailItem" parent="TextAppearance.MaterialComponents.Body1" />
+
+    <style name="TextAppearance.MarvelCharacters.Name" parent="TextAppearance.MaterialComponents.Headline5">
+        <item name="android:textSize">21sp</item>
+    </style>
+
+    <style name="TextAppearance.MarvelCharacters.Toolbar.Text" parent="TextAppearance.MarvelCharacters.Name">
+        <item name="android:textColor">?attr/colorOnPrimary</item>
+    </style>
+
+    <style name="TextAppearance.MarvelCharacters.Description" parent="TextAppearance.MaterialComponents.Body1">
+        <item name="android:textSize">17sp</item>
     </style>
 </resources>

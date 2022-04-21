@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Common dimens -->
+    <dimen name="fill_constraint_space">0dp</dimen>
+    <dimen name="small_margin">8dp</dimen>
+    <dimen name="normal_margin">16dp</dimen>
+    <dimen name="small_padding">8dp</dimen>
+    <dimen name="normal_padding">16dp</dimen>
+    <dimen name="progress_bar_circular_size">80dp</dimen>
+    <!-- Characters List Dimens -->
+    <dimen name="character_list_item_size">104dp</dimen>
+    <dimen name="character_list_item_image_width">104dp</dimen>
+    <!-- Characters List Item Dimes -->
+    <dimen name="character_item_elevation">5dp</dimen>
+    <dimen name="character_item_corner_radius">10dp</dimen>
+    <!-- Character Detail Dimens -->
+    <dimen name="character_detail_avatar_height">360dp</dimen>
+    <dimen name="toolbar_elevation">5dp</dimen>
+    <dimen name="toolbar_no_elevation">0dp</dimen>
+</resources>

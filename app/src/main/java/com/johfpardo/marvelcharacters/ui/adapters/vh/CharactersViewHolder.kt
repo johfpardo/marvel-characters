@@ -1,7 +1,7 @@
 package com.johfpardo.marvelcharacters.ui.adapters.vh
 
 import androidx.recyclerview.widget.RecyclerView
-import com.johfpardo.marvelcharacters.data.model.Character
+import com.johfpardo.marvelcharacters.data.model.CharacterSummary
 import com.johfpardo.marvelcharacters.databinding.CharacterListItemBinding
 
 class CharactersViewHolder(
@@ -9,7 +9,7 @@ class CharactersViewHolder(
     private val characterItemListener: CharacterItemListener
 ) : RecyclerView.ViewHolder(binding.root) {
 
-    fun bind(character: Character) {
+    fun bind(character: CharacterSummary) {
         with(binding) {
             this.character = character
             this.setClickListener {
