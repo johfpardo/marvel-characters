@@ -27,7 +27,7 @@ fun bindImageFromUrl(view: ImageView, imageUrl: String?) {
 @BindingAdapter("detailItemStyle")
 fun bindDetailItemStyle(view: TextView, detailItem: DetailItem) {
     when (detailItem) {
-        is DetailItem.Title -> view.setTextAppearance(R.style.DetailTitle)
-        is DetailItem.Item -> view.setTextAppearance(R.style.DetailItem)
+        is DetailItem.Title -> view.setTextAppearance(R.style.TextAppearance_MarvelCharacters_DetailTitle)
+        is DetailItem.Item -> view.setTextAppearance(R.style.TextAppearance_MarvelCharacters_DetailItem)
     }
 }

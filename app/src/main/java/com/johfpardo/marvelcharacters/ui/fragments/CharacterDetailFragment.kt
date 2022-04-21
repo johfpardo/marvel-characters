@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
 import com.johfpardo.marvelcharacters.databinding.FragmentCharacterDetailBinding
 import com.johfpardo.marvelcharacters.di.AppComponentProvider
@@ -44,13 +45,30 @@ class CharacterDetailFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentCharacterDetailBinding.inflate(inflater, container, false)
         adapter = CharacterDetailAdapter(arrayListOf())
+        binding = FragmentCharacterDetailBinding.inflate(inflater, container, false).apply {
+            rvDetailList.adapter = adapter
 
-        binding.rvDetailList.adapter = adapter
+            btRetry.setOnClickListener {
+                getCharacter()
+            }
 
-        binding.btRetry.setOnClickListener {
-            getCharacter()
+            var isToolbarShown = false
+
+            nsvCharacterDetail.setOnScrollChangeListener(
+                NestedScrollView.OnScrollChangeListener { _, _, scrollY, _, _ ->
+
+                    val shouldShowToolbar = scrollY > toolbar.height
+
+                    if (isToolbarShown != shouldShowToolbar) {
+                        isToolbarShown = shouldShowToolbar
+
+                        appbar.isActivated = shouldShowToolbar
+
+                        toolbarLayout.isTitleEnabled = shouldShowToolbar
+                    }
+                }
+            )
         }
 
         return binding.root
